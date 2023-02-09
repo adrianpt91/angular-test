@@ -8,7 +8,7 @@ import { productReducer } from './store/products.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ProductsEffect } from './store/products.effect';
 import { AddComponent } from './add/add.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditComponent } from './edit/edit.component';
 
 
@@ -22,6 +22,7 @@ import { EditComponent } from './edit/edit.component';
     CommonModule,
     ProductsRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     StoreModule.forFeature('myproducts', productReducer),
     EffectsModule.forFeature([ProductsEffect])
   ]

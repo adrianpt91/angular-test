@@ -18,7 +18,7 @@
             <tr *ngFor="let product of products">
                 <td>{{ product.name }}</td>
                 <td>{{ product.serial_number }}</td>
-                <td>${{ product.price }}</td>
+                <td>${{ product.price | number:'1.2-2'}}</td>
                 <td>
                 <button [routerLink]="['/edit', product.id]" class="btn btn-primary" style="margin: 5px">Edit</button>
                 <button (click)="openDeleteModal(product.id)" class="btn btn-danger" style="margin: 5px">Delete</button>

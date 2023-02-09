@@ -1,31 +1,56 @@
 <div class="container mt-2">
     <h2>Edit a product</h2>
-    <div class="mb-3 col col-md-6">
-        <label for="productName" class="form-label">Product Name</label>
-        <input
-          type="text"
-          [(ngModel)]="productForm.name"
-          class="form-control"
-          id="productName"
-        />
-    </div>
-    <div class="mb-3 col col-md-6">
-        <label for="productSerial" class="form-label">Serial Number</label>
-        <input
-          type="text"
-          [(ngModel)]="productForm.serial_number"
-          class="form-control"
-          id="productSerial"
-        />
-    </div>
-    <div class="mb-3 col col-md-6">
+    <form [formGroup]="productForm" (ngSubmit)="update()">
+      <div class="mb-3 col col-md-6">
+          <label for="productName" class="form-label">Product Name</label>
+          <input
+            type="text"
+            formControlName="name" 
+            required 
+            [ngClass]="{ 'is-invalid': form['name'].touched && form['name'].errors, 'is-valid': form['name'].touched && form['name'].valid }"
+            class="form-control"
+            id="productName"
+          />
+          <div *ngIf="form['name'].touched && form['name'].errors" class="invalid-feedback">
+            <div *ngIf="form['name'].errors['required']">Name is required!</div>
+            <div *ngIf="form['name'].errors['maxlength']">Max characters allowed is 20!</div>
+            <div *ngIf="form['name'].errors['pattern']">Enter a valid name!</div>
+          </div>
+      </div>
+      <div class="mb-3 col col-md-6">
+          <label for="productSerial" class="form-label">Serial Number</label>
+          <input
+            type="text"
+            [ngClass]="{ 'is-invalid': form['serial_number'].touched && form['serial_number'].errors, 'is-valid': form['name'].touched && form['serial_number'].valid }"
+            formControlName="serial_number"
+            required
+            class="form-control"
+            id="productSerial"
+          />
+          <div *ngIf="form['serial_number'].touched && form['serial_number'].errors" class="invalid-feedback">
+            <div *ngIf="form['serial_number'].errors['required']">Serial is required!</div>
+            <div *ngIf="form['serial_number'].errors['pattern']">Enter Valid Serial!</div>
+            <div *ngIf="form['serial_number'].errors['maxlength'] || form['serial_number'].errors['minlength']">Enter a valid Serial!</div>
+          </div>
+      </div>
+      <div class="mb-3 col col-md-6">
         <label for="price" class="form-label">Price</label>
-        <input
-          type="number"
-          [(ngModel)]="productForm.price"
-          class="form-control"
-          id="price"
-        />
-    </div>
-    <button type="button" class="btn btn-primary" (click)="update()">Update</button>
+        <div class="input-group has-validation">
+          <span class="input-group-text" id="inputGroupPrepend">$</span>
+          <input
+            type="number"
+            [ngClass]="{ 'is-invalid': form['price'].touched && form['price'].errors, 'is-valid': form['name'].touched && form['price'].valid }"
+            formControlName="price"
+            required
+            class="form-control"
+            id="price"
+          />
+          <div *ngIf="form['price'].touched && form['price'].errors" class="invalid-feedback">
+            <div *ngIf="form['price'].errors">Price is not valid format!</div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" [disabled]="productForm.invalid" class="btn btn-primary me-4">Create</button>
+      <button type="button" class="btn btn-secondary" routerLink="../../">Cancel</button>
+    </form>
 </div>

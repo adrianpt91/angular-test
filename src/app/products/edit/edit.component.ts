@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { switchMap } from 'rxjs';
@@ -15,18 +16,14 @@ import { selectProductById } from '../store/products.selector';
   styleUrls: ['./edit.component.scss']
 })
 export class EditComponent implements OnInit{
-  productForm: Products = {
-    id: 0,
-    name: '',
-    serial_number: '',
-    price: 0,
-  };
+  productForm: FormGroup = new FormGroup('')
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private store: Store,
-    private appStore: Store<Appstate>
+    private appStore: Store<Appstate>,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -38,7 +35,13 @@ export class EditComponent implements OnInit{
     );
     fetchData$.subscribe((data) => {
       if (data) {
-        this.productForm = { ...data };
+        this.productForm = this.fb.group({
+          id: [data.id],
+          name: [data.name, Validators.compose([Validators.required, Validators.maxLength(20), Validators.pattern('^[a-zA-Zñáéíóú ]+$')])],
+          serial_number: [data.serial_number, Validators.compose([Validators.required,
+          Validators.pattern('^[A-Za-z0-9]+'), Validators.maxLength(8), Validators.minLength(8)])],
+          price: [data.price, Validators.compose([Validators.pattern('^[0-9]+(.[0-9]{0,1})?$'), Validators.min(100), Validators.max(500)])]      
+        });
       }
       else{
         this.router.navigate(['/']);
@@ -46,9 +49,14 @@ export class EditComponent implements OnInit{
     });
   }
 
+  get form(): { [key: string]: AbstractControl; }
+  {
+      return this.productForm.controls;
+  }
+
   update() {
     this.store.dispatch(
-      invokeUpdateProductAPI({ updateProduct: { ...this.productForm } })
+      invokeUpdateProductAPI({ updateProduct: { ...this.productForm.value } })
     );
     let apiStatus$ = this.appStore.pipe(select(selectAppState));
     apiStatus$.subscribe((apState) => {

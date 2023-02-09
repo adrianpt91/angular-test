@@ -1,0 +1,32 @@
+<div class="container mt-2">
+    <h2>Add product</h2>
+    <div class="mb-3 col col-md-6">
+        <label for="productName" class="form-label">Product Name</label>
+        <input
+          type="text"
+          [(ngModel)]="productForm.name"
+          class="form-control"
+          id="productName"
+        />
+    </div>
+    <div class="mb-3 col col-md-6">
+        <label for="productSerial" class="form-label">Serial Number</label>
+        <input
+          type="text"
+          [(ngModel)]="productForm.serial_number"
+          class="form-control"
+          id="productSerial"
+        />
+    </div>
+    <div class="mb-3 col col-md-6">
+        <label for="price" class="form-label">Price</label>
+        <input
+          type="number"
+          [(ngModel)]="productForm.price"
+          class="form-control"
+          id="price"
+        />
+    </div>
+    <button type="button" class="btn btn-primary" (click)="save()">Create</button>
+</div>
+

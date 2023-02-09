@@ -1,0 +1,49 @@
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-12 mb-4 d-flex justify-content-end">
+          <a routerLink="/add" class="btn btn-primary">Add Product</a>
+        </div>
+    </div>
+    <ng-container *ngIf="products$ | async as products">    
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Serial number</th>
+                <th scope="col">Price</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let product of products">
+                <td>{{ product.name }}</td>
+                <td>{{ product.serial_number }}</td>
+                <td>${{ product.price }}</td>
+                <td>
+                <button [routerLink]="['/edit', product.id]" class="btn btn-primary" style="margin: 5px">Edit</button>
+                <button (click)="openDeleteModal(product.id)" class="btn btn-danger" style="margin: 5px">Delete</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </ng-container>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are sure to delete this product?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" (click)="delete()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
